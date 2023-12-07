@@ -20,6 +20,7 @@ jobs:
           git submodule update --init
           make setup-golpe
           flatc --version
+          more --lines 20 build/nostr-index_generated.h
           make -j4
 
       - name: Run strfry

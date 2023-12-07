@@ -20,11 +20,11 @@ jobs:
           git submodule update --init
           make setup-golpe
           flatc --version
-          make
+          make -j4
 
       - name: Run strfry
         run: |
           sudo ./strfry info
           cat /etc/os-release
-          
+          flatc --version
 

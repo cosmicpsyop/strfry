@@ -48,7 +48,7 @@ jobs:
           git checkout feature/freebsd-support-three
           cd ../../../
           flatc --version
-          gmake
+          gmake -j4
           if ! [ -f ./strfry ]; then
              echo "Strfry build failed."
              exit 1

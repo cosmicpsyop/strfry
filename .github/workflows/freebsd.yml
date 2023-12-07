@@ -17,9 +17,6 @@ jobs:
   freebsd:
     runs-on: ubuntu-latest
     name: A job to run strfry in FreeBSD
-    env:
-      MYTOKEN : ${{ secrets.MYTOKEN }}
-      MYTOKEN2: "value2"
     steps:
     - name: Checkout strfry
       uses: actions/checkout@v4
@@ -30,7 +27,6 @@ jobs:
       uses: vmactions/freebsd-vm@v1
       with:
         release: 13.2
-        envs: 'MYTOKEN MYTOKEN2'
         usesh: true
         prepare: |
           pkg install -y gcc gmake cmake git perl5 openssl lmdb flatbuffers libuv libinotify zstr secp256k1 zlib-ng p5-Regexp-Grammars p5-Module-Install-Template p5-YAML wget
@@ -51,15 +47,16 @@ jobs:
           cd external/uWebSockets
           git checkout feature/freebsd-support-three
           cd ../../../
+          flatc --version
           gmake
           if ! [ -f ./strfry ]; then
              echo "Strfry build failed."
              exit 1
           fi
           # ensure A copy of the binary is sync'ed back to host
-          cp ./strfry strfry.bin
-          wget -q https://assets.wellorder.net/nostr/nostr-wellorder-early-500k-v1.jsonl.bz2
-          bunzip2 nostr-wellorder-early-500k-v1.jsonl.bz2
+          # cp ./strfry strfry.bin
+          # wget -q https://assets.wellorder.net/nostr/nostr-wellorder-early-500k-v1.jsonl.bz2
+          # bunzip2 nostr-wellorder-early-500k-v1.jsonl.bz2
           # this never returns by design
           # cat ../nostr-dumps/nostr-wellorder-early-500k-v1.jsonl | ./strfry import         
           # this never returns and seems an error of sorts

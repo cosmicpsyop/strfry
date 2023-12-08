@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
-    name: A job to run strfry on Ubuntu
+    name: A job to build and run strfry on Ubuntu
     steps:
       - name: Checkout strfry
         uses: actions/checkout@v4
@@ -19,13 +19,19 @@ jobs:
           liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
           git submodule update --init
           make setup-golpe
-          flatc --version
-          more --lines 20 build/nostr-index_generated.h
           make -j4
+          if ! [ -f ./strfry ]; then
+             echo "Strfry build failed."
+             cat /etc/os-release
+             flatc --version
+             more --lines 20 build/nostr-index_generated.h
+             exit 1
+          fi
 
       - name: Run strfry
         run: |
           sudo ./strfry info
           cat /etc/os-release
           flatc --version
+          more --lines 20 build/nostr-index_generated.h
 

@@ -16,7 +16,7 @@ on: [push, pull_request]
 jobs:
   freebsd:
     runs-on: ubuntu-latest
-    name: A job to run strfry in FreeBSD
+    name: A job to build and run strfry in FreeBSD
     steps:
     - name: Checkout strfry
       uses: actions/checkout@v4
@@ -32,8 +32,6 @@ jobs:
           pkg install -y gcc gmake cmake git perl5 openssl lmdb flatbuffers libuv libinotify zstr secp256k1 zlib-ng p5-Regexp-Grammars p5-Module-Install-Template p5-YAML wget
 
         run: |
-          # exit on error not working
-          # set -e
           git config --global --add safe.directory /home/runner/work/strfry/strfry
           git config --local --name-only --get-regexp core\.sshCommand
           git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"          
@@ -47,8 +45,6 @@ jobs:
           cd external/uWebSockets
           git checkout feature/freebsd-support-three
           cd ../../../
-          flatc --version
-          more --lines 20 build/nostr-index_generated.h
           gmake
           if ! [ -f ./strfry ]; then
              echo "Strfry build failed."
@@ -56,4 +52,6 @@ jobs:
           fi
           ./strfry info 
           freebsd-version
+          flatc --version
+          more --lines 20 build/nostr-index_generated.h
 

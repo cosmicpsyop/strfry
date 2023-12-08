@@ -8,8 +8,8 @@ RUN apt update && apt install -y --no-install-recommends \
     libzstd-dev
 
 COPY . .
-RUN make clean
 RUN git submodule update --init
+RUN make clean
 RUN make setup-golpe
 RUN make -j4
 

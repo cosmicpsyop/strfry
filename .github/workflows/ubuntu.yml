@@ -32,12 +32,22 @@ jobs:
           # Build the package
           dpkg-buildpackage --build=binary -us -uc
           # Move the built package into workspace
+          echo move
           mv ../*.deb .
+          echo $?
           # Output the filename
+          echo filename
           filename=`ls *.deb | grep -v -- -dbgsym`
+          echo $?
+          echo filename2
           dbgsym=`ls *.deb | grep -- -dbgsym`
+          echo $?
+          echo 3
           echo ::set-output name=filename::$filename
+          echo $?
+          echo 4
           echo ::set-output name=filename-dbgsym::$dbgsym
+          echo $?
           ls
 
       - name: Upload strfry

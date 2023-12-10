@@ -29,24 +29,16 @@ jobs:
       - name: Package strfry
         run: |
           sudo apt-get install debhelper devscripts -y
-          # Build the package
           dpkg-buildpackage --build=binary -us -uc
-          # Move the built package into workspace
           mv ../*.deb .
-          # Output the filename
           filename=`ls *.deb | grep -v -- -dbgsym`
-          echo "filename=$filename" >> $GITHUB_OUTPUT
-          #dbgsym=`ls *.deb | grep -- -dbgsym`
-          #echo "filename-dbgsym=$dbgsym" >> $GITHUB_OUTPUT
-          #fname="${FILE%%.*}"
-          #fname="${fname}.tar.gz"
-          #tar czpf $fname debian/strfry/DEBIAN
+          echo "filename=$filename" >> $GITHUB_ENV
 
       - name: Upload strfry deb
         uses: actions/upload-artifact@v3
         with:
-          name: "${filename}"
-          path: strfry*.deb
+          name: ${{ env.filename }}
+          path: ${{ env.filename }}
 
       - name: Run strfry
         run: |

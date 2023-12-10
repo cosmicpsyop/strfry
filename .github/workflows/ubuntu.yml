@@ -29,7 +29,6 @@ jobs:
       - name: Package strfry
         run: |
           sudo apt-get install debhelper devscripts -y
-          mk-build-deps --install --tool="${install_tool}" debian/control
           # Build the package
           dpkg-buildpackage --build=binary -us -uc
           # Output the filename
@@ -39,9 +38,9 @@ jobs:
           echo ::set-output name=filename::$filename
           echo ::set-output name=filename-dbgsym::$dbgsym
           # Move the built package into the Docker mounted workspace
-          mv $filename $dbgsym workspace/
-          # Set the install command to be used by mk-build-deps (use --yes for non-interactive)
-          mv $filename $dbgsym workspace/
+          mv $filename $dbgsym strfry/
+          cd strfry
+          ls
 
       - name: Upload strfry
         uses: actions/upload-artifact@v1

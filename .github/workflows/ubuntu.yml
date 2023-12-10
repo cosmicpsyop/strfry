@@ -31,6 +31,8 @@ jobs:
           sudo apt-get install debhelper devscripts -y
           # Build the package
           dpkg-buildpackage --build=binary -us -uc
+          ls 
+          ls ..
           # Output the filename
           cd ..
           filename=`ls *.deb | grep -v -- -dbgsym`

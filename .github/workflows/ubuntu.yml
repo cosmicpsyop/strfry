@@ -38,8 +38,9 @@ jobs:
           echo "filename=$filename" >> $GITHUB_OUTPUT
           #dbgsym=`ls *.deb | grep -- -dbgsym`
           #echo "filename-dbgsym=$dbgsym" >> $GITHUB_OUTPUT
-          fname=${filename##*/}
-          tar cvzpf $fname.tar.gz -C debian/strfry/DEBIAN
+          fname="${FILE%%.*}"
+          fname="${fname}.tar.gz"
+          tar czpf $fname debian/strfry/DEBIAN
           ls ..
 
       - name: Upload strfry

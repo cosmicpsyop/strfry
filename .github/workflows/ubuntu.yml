@@ -38,22 +38,15 @@ jobs:
           echo "filename=$filename" >> $GITHUB_OUTPUT
           #dbgsym=`ls *.deb | grep -- -dbgsym`
           #echo "filename-dbgsym=$dbgsym" >> $GITHUB_OUTPUT
-          fname="${FILE%%.*}"
-          fname="${fname}.tar.gz"
-          tar czpf $fname debian/strfry/DEBIAN
+          #fname="${FILE%%.*}"
+          #fname="${fname}.tar.gz"
+          #tar czpf $fname debian/strfry/DEBIAN
 
       - name: Upload strfry deb
         uses: actions/upload-artifact@v3
         with:
-          name: $filename
+          name: "${filename}"
           path: strfry*.deb
-
-        - name: Upload strfry tgz 
-        uses: actions/upload-artifact@v3
-        with:
-          name: $filename
-          path: strfry*.tar.gz
-
 
       - name: Run strfry
         run: |

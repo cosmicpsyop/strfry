@@ -52,11 +52,17 @@ jobs:
           fi
 
           freebsd/build-pkg.sh
+
           pkgfilename='ls *.pkg'
           echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
 
           ./strfry info 
           freebsd-version
+
+    - name: Verify strfry
+      run: |
+        ls 
+        echo  ${{ env.pkgfilename }}
 
     - name: Upload strfry
       uses: actions/upload-artifact@v3

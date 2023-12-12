@@ -59,7 +59,7 @@ jobs:
           freebsd-version
 
     - name: Upload strfry
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ env.pkgfilename }}
         path: ${{ env.pkgfilename }}

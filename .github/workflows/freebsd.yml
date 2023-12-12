@@ -55,14 +55,18 @@ jobs:
 
           pkgfilename='ls *.pkg'
           echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
+          echo "pkgfilename=$pkgfilename"
 
           ./strfry info 
           freebsd-version
 
-    - name: Verify strfry
+    - name: Verify strfry copy back
       run: |
-        ls 
-        echo  ${{ env.pkgfilename }}
+          echo  "before pkg ${{ env.pkgfilename }}"
+          pkgfilename='ls *.pkg'
+          echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
+          ls 
+          echo  "after pkg ${{ env.pkgfilename }}"
 
     - name: Upload strfry
       uses: actions/upload-artifact@v3

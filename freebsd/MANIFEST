@@ -1,0 +1,40 @@
+name: strfry
+version: 0.96.1
+origin: net
+comment: Metapackage for strfry
+www: http://hoytech.com
+maintainer: Doug Hoytech <doug@hoytech.com>
+prefix: /usr
+desc: <<EOD
+  strfry is a relay for the nostr protocol
+EOD
+deps: {
+    openssl: {origin: security/openssl, version: 1.1.1w,1},
+    lmdb: {origin: databases/lmdb, version: 0.9.31,1},
+    flatbuffers: {origin: devel/flatbuffers, version: 23.5.26,1},
+    libuv: {origin: devel/libuv, version: 1.46.0},
+    libinotify: {origin: devel/libinotify, version: 20211018},
+    zstr: {origin: archivers/zstr, version: 1.0.7},
+    secp256k1: {origin: math/secp256k1, version: 0.4.0},
+    zlib-ng: {origin: archivers/zlib-ng, version: 2.0.6},
+}
+licenses: [GPLv3]
+users: [strfry]
+groups: [strfry]
+files: {
+  /usr/bin/strfry: {sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0755 },
+  /etc/strfry.conf:{sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0644 };
+}
+directories: {
+  /var/lib/strfry : 'y';
+}
+scripts: {
+  post-install: <<EOD
+    #!/bin/sh
+    echo post-install
+EOD
+  pre-install: <<EOD
+    #!/bin/sh
+    echo pre-install
+EOD
+}

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# PROVIDE: strfry
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="strfry"
+rcvar="strfry_enable"
+pidfile="/var/run/${name}.pid"
+command="/usr/bin/strfry"
+
+load_rc_config $name
+: ${strfry_enable:=no}
+
+command_args="relay"
+
+run_rc_command "$1"
+

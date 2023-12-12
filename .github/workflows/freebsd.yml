@@ -53,7 +53,7 @@ jobs:
 
           freebsd/build-pkg.sh
 
-          pkgfilename='ls *.pkg'
+          pkgfilename=`ls *.pkg`
           echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
           echo "pkgfilename=$pkgfilename"
 
@@ -63,7 +63,7 @@ jobs:
     - name: Verify strfry copy back
       run: |
           echo  "before pkg ${{ env.pkgfilename }}"
-          pkgfilename='ls *.pkg'
+          pkgfilename=`ls *.pkg`
           echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
           ls 
           echo  "after pkg ${{ env.pkgfilename }}"

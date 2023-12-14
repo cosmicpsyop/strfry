@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # PROVIDE: strfry
-# REQUIRE: DAEMON
+### REQUIRE: DAEMON networking
+# REQUIRE: networking
 # KEYWORD: shutdown
 
 . /etc/rc.subr
@@ -9,12 +10,13 @@
 name="strfry"
 rcvar="strfry_enable"
 pidfile="/var/run/${name}.pid"
-command="/usr/bin/strfry"
+# command="/usr/bin/strfry"
+# command_args="relay &"
+command="/usr/sbin/daemon"
+command_args="-P ${pidfile} -r -f /usr/sbin/strfry relay"
 
 load_rc_config $name
 : ${strfry_enable:=no}
-
-command_args="relay"
 
 run_rc_command "$1"
 

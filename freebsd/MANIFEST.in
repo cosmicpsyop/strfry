@@ -15,7 +15,7 @@ users: [strfry]
 groups: [strfry]
 files: {
   /usr/local/bin/strfry: { sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0755 },
-  /usr/strfry.conf:{ sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0644 };
+  /etc/strfry.conf:{ sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0644 };
   /usr/local/etc/rc.d/strfry:{ sum: 'sha256sum', uname: root, gname: root, perm: 0755 };
 }
 directories: {

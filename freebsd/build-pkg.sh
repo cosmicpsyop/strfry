@@ -25,6 +25,7 @@ fi
 
 mkdir -p ${root_dir}/usr/local/bin
 mkdir -p ${root_dir}/var/lib/strfry
+mkdir -p ${root_dir}/etc/
 mkdir -p ${root_dir}/usr/local/etc/rc.d
 
 cp ../strfry ${root_dir}/usr/local/bin

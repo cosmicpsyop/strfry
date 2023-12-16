@@ -23,13 +23,13 @@ else
     root_dir="root"
 fi
 
-mkdir -p ${root_dir}/usr/bin
+mkdir -p ${root_dir}/usr/local/bin
 mkdir -p ${root_dir}/var/lib/strfry
-mkdir -p ${root_dir}/etc/rc.d
+mkdir -p ${root_dir}/usr/local/etc/rc.d
 
-cp ../strfry ${root_dir}/usr/bin/
+cp ../strfry ${root_dir}/usr/local/bin
 cp ../strfry.conf ${root_dir}/etc/
-cp rc.strfry ${root_dir}/etc/rc.d/strfry
+cp rc.strfry ${root_dir}/usr/local/etc/rc.d/strfry
 sed 's|./strfry-db/|/var/lib/strfry/|g' ${root_dir}/etc/strfry.conf > ${root_dir}/etc/strfry.conf.tmp && mv ${root_dir}/etc/strfry.conf.tmp ${root_dir}/etc/strfry.conf
 
 VERSION=$(curl -s https://api.github.com/repos/hoytech/strfry/tags | grep -o '"name": "[^"]*' | awk -F'"' 'NR==1 {print $4}')
@@ -39,7 +39,7 @@ then
     VERSION="0.9.0"
 fi
 
-DEP_LIST="openssl lmdb flatbuffers libuv libinotify zstr secp256k1 zlib-ng"
+DEP_LIST="openssl lmdb flatbuffers libuv libinotify zstd secp256k1 zlib-ng gcc"
 
 DIR_SIZE=$(find ${root_dir} -type f -exec stat -f %z {} + | awk 'BEGIN {s=0} {s+=$1} END {print s}')
 

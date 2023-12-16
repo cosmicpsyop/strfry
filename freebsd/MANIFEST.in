@@ -14,9 +14,9 @@ licenses: [GPLv3]
 users: [strfry]
 groups: [strfry]
 files: {
-  /usr/bin/strfry: { sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0755 },
-  /etc/strfry.conf:{ sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0644 };
-  /etc/rc.d/strfry:{ sum: 'sha256sum', uname: root, gname: root, perm: 0755 };
+  /usr/local/bin/strfry: { sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0755 },
+  /usr/strfry.conf:{ sum: 'sha256sum', uname: strfry, gname: strfry, perm: 0644 };
+  /usr/local/etc/rc.d/strfry:{ sum: 'sha256sum', uname: root, gname: root, perm: 0755 };
 }
 directories: {
   /var/lib/strfry : 'y';
@@ -25,7 +25,6 @@ scripts: {
   pre-deinstall: <<EOD
 #!/bin/sh
 
-#/etc/rc.d/strfry stop  >/dev/null 2>&1
 
 EOD
   post-deinstall: <<EOD
@@ -39,19 +38,16 @@ if /usr/sbin/pw group show strfry >/dev/null 2>&1; then
   /usr/sbin/pw group del strfry
 fi
 
-
 EOD
 
   post-install: <<EOD
 #!/bin/sh
 
+ln -s /etc/strfry.conf /usr/local/etc/strfry.conf >/dev/null 2>&1
 chown strfry:strfry /var/lib/strfry >/dev/null 2>&1
 if ! grep -q "strfry_enable=" /etc/rc.conf; then
     echo 'strfry_enable="YES"' >> /etc/rc.conf
 fi
-
-# 
-# service strfry start
 
 
 EOD

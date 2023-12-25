@@ -1,0 +1,28 @@
+on: push
+
+jobs:
+  build-debs:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - 
+        name: build-deb-amd64
+        uses: jtdor/build-deb-action@v1
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          extra-build-deps: git
+          before-build-hook: make setup-golpe
+          host-arch: amd64
+      - 
+        name: upload
+        uses: actions/upload-artifact@v3
+        with:
+          path: debian/artifacts/
+          name: debian_package
+

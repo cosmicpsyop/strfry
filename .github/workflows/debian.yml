@@ -17,7 +17,7 @@ jobs:
         with:
           buildpackage-opts: --build=binary --no-sign
           extra-build-deps: git
-          before-build-hook: make setup-golpe
+          before-build-hook: git submodule update --init; make setup-golpe
           host-arch: amd64
       - 
         name: upload

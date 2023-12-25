@@ -16,7 +16,7 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           buildpackage-opts: --build=binary --no-sign
-          extra-build-deps:  git g++ make pkg-config libtool ca-certificates libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          extra-build-deps:  git pkg-config libtool ca-certificates libyaml-perl libtemplate-perl libregexp-grammars-perl
           before-build-hook: git submodule update --init; make setup-golpe
           host-arch: amd64
       - 

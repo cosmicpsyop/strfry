@@ -1,3 +1,12 @@
+# https://github.com/jtdor/build-deb-action
+# extra-build-deps overrides depends from control
+# play with debchange --controlmaint
+#     before-build-hook: 
+#       cat /etc/os-release; 
+#       git submodule update --init; 
+#       make setup-golpe; 
+#       debchange --controlmaint \
+#         --local="+ci${{ github.run_id }}~git$(git rev-parse --short HEAD)" "CI build"
 name: debian
 
 on: [push, pull_request]
@@ -19,7 +28,7 @@ jobs:
         with:
           buildpackage-opts: --build=binary --no-sign
           extra-build-deps:  git g++ make pkg-config libtool ca-certificates libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev devscripts
-          before-build-hook: cat /etc/os-release; git submodule update --init; make setup-golpe; debchange --controlmaint --local="+ci${{ github.run_id }}~git$(git rev-parse --short HEAD)" "CI build"
+          before-build-hook: cat /etc/os-release; git submodule update --init; make setup-golpe; 
           host-arch: amd64
       - 
         name: upload

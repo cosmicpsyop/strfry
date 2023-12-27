@@ -29,6 +29,8 @@ WORKDIR /app
 
 # Copy only necessary artifacts from the build stage
 COPY --from=build /build/strfry strfry
+COPY --from=build /usr/local/lib/. /usr/local/lib/
+
 
 # Install minimal runtime dependencies
 RUN dnf install -y lmdb-libs flatbuffers libzstd libb2

@@ -2,7 +2,8 @@
 %global version 0.9.6
 Name:           strfry
 Version:        %{version}
-Release:        1%{?dist}
+Release:        1
+#Release:        1%{?dist}
 Summary:        strfry relay service
 
 License:        GPLv3
@@ -55,8 +56,8 @@ cd secp256k1
 make
 make install
 mkdir -p %{buildroot}/usr/local/lib/
-make DESTDIR=%{buildroot} install
-rm -rf %{buildroot}/usr/local/inlcude
+# make DESTDIR=%{buildroot} install
+# rm -rf %{buildroot}/usr/local/inlcude
 cd ..
 # XXX - remove when fixed
 

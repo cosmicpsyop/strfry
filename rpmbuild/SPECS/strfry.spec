@@ -2,7 +2,7 @@
 %global version 0.9.6
 Name:           strfry
 Version:        %{version}
-Release:        %{?PACKAGE_NUMBER}%{?dist}
+Release:        1%{?dist}
 Summary:        strfry relay service
 
 License:        GPLv3
@@ -41,50 +41,45 @@ strfry is a relay for the nostr protocol
 %global __mangle_shebangs_exclude_from /usr/bin/env
 
 
-%global commit b6e7e4f  # Use the specific commit or tag you want
-
-# Consider pinning the version of libsecp256k1 by archive or commit
-Source0: https://github.com/bitcoin-core/secp256k1/archive/%{commit}/secp256k1-%{commit}.tar.gz
-# %prep
-# %setup -q -n secp256k1-%{commit}
-
 %prep
-%setup -q -T -b 0
+# %setup -q -T -b 0
+git clone -b fedora-pkg-build-test https://github.com/cosmicpsyop/strfry.git
+#git clone https://github.com/cosmicpsyop/strfry.git
 
-%build
-# Clone secp256k1 repository
+# XXX - remove when fixed
+# build and manage secp256k1 with schnorrsig
 git clone https://github.com/bitcoin-core/secp256k1.git
-
-# Build secp256k1
 cd secp256k1
 ./autogen.sh
 ./configure --enable-module-schnorrsig
 make
 make install
+mkdir -p %{buildroot}/usr/local/lib/
+make DESTDIR=%{buildroot} install
+rm -rf %{buildroot}/usr/local/inlcude
+cd ..
+# XXX - remove when fixed
 
-# Continue with the rest of the build steps
+%build
+# build steps
+cd strfry
 git submodule update --init
 make setup-golpe
-make clean
 make -j4
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/etc/
+mkdir -p %{buildroot}/usr/bin/
 mkdir -p %{buildroot}/var/lib/strfry/
 mkdir -p %{buildroot}/usr/local/lib/
+mkdir -p %{buildroot}/usr/lib/systemd/system/
 
-install -m 755 -D strfry %{buildroot}%{_bindir}/%{name}
-install -m 644 -D strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
-install -m 644 -D %{_builddir}/strfry.service %{buildroot}%{_unitdir}/%{name}.service
+install -m 755 -D strfry/strfry %{buildroot}%{_bindir}/%{name}
+install -m 644 -D strfry/strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 sed -i 's|./strfry-db/|/var/lib/strfry/|g' %{buildroot}%{_sysconfdir}/%{name}.conf
-# Custom build can be removed when package includes
-install -m 755 -D /usr/local/lib/libsecp256k1.a %{buildroot}/usr/local/lib/libsecp256k1.a
-install -m 755 -D /usr/local/lib/libsecp256k1.la %{buildroot}/usr/local/lib/libsecp256k1.la
-install -m 755 -D /usr/local/lib/libsecp256k1.so %{buildroot}/usr/local/lib/libsecp256k1.so
-install -m 755 -D /usr/local/lib/libsecp256k1.so.2 %{buildroot}/usr/local/lib/libsecp256k1.so.2
-install -m 755 -D /usr/local/lib/libsecp256k1.so.2.1.2 %{buildroot}/usr/local/lib/libsecp256k1.so.2.1.2
-
+install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}%{_unitdir}/%{name}.service
+ 
 %clean
 rm -rf %{buildroot}
 
@@ -93,7 +88,12 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_sysconfdir}/%{name}.conf
 %{_unitdir}/%{name}.service
-/usr/local/lib/*
+
+# XXX - remove when fixed
+/usr/local/lib/libsecp256k1.so.2
+/usr/local/lib/libsecp256k1.so
+/usr/local/lib/libsecp256k1.so.2.1.2
+# XXX - remove when fixed
 
 
 %ghost %{_localstatedir}/log/%{name}.log
@@ -162,13 +162,12 @@ if [ $1 == 0 ]; then
 fi
 
 if [ $1 == 0 ] && [ -d /run/systemd/system ] ; then
-	systemctl --system daemon-reload >/dev/null || true
+    systemctl --system daemon-reload >/dev/null || true
 fi
 
 
 #systemctl stop strfry || echo "strfry was not started"
 
 %changelog
-* Fri Sep 22 2023
+* Fri Sep 22 2023 Doug HoyTech <doug@hoytech.com> - 0.9.6-1
 - Initial packaging
-

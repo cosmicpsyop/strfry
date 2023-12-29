@@ -4,6 +4,7 @@ After=syslog.target network.target
 
 [Service]
 User=strfry
+Environment=LD_LIBRARY_PATH=/usr/local/lib
 ExecStart=/usr/bin/strfry relay
 Restart=on-failure
 RestartSec=5

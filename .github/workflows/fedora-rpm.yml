@@ -27,7 +27,7 @@ jobs:
         CONTAINER_ID=$(docker ps -q --filter ancestor=fedora39/strfry)
         echo $CONTAINER_ID
         docker ps
-        docker cp $CONTAINER_ID:/root/rpmbuild/RPMS/x86_64/strfry-0.9.6-1.fc39.x86_64.rpm ./strfry.rpm
+        docker cp $CONTAINER_ID:/app/strfry-0.9.6-1.fc39.x86_64.rpm ./strfry.rpm
 
     - name: Upload RPM artifact
       uses: actions/upload-artifact@v2

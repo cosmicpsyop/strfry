@@ -11,7 +11,8 @@ jobs:
       id: rpm
       uses: naveenrajm7/rpmbuild@master
       with:
-        spec_file: "rpmbuild/SPECS/strfry.spec"
+        spec_file: "/home/runner/work/strfry/strfry/rpmbuild/SPECS/strfry.spec"
+
 
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0

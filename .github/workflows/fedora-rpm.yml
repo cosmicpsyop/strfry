@@ -15,6 +15,13 @@ jobs:
       run: |
         docker build . --file fedora-rpm.Dockerfile --tag fedora39/strfry
 
+    - name: Run the fedora39 docker image for strfry
+      run: |
+        docker run -e LD_LIBRARY_PATH='/usr/local/lib' \
+               -v /home/runner/work/strfry/strfry/strfry-db:/app/strfry-db \
+               -v /home/runner/work/strfry/strfry/strfry.conf:/app/strfry.conf \
+               -t fedora39/strfry
+
     - name: Extract RPM artifact from the Docker container
       run: |
         CONTAINER_ID=$(docker ps -q --filter ancestor=fedora39/strfry)

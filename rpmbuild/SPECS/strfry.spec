@@ -78,6 +78,8 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/
 install -m 755 -D strfry/strfry %{buildroot}%{_bindir}/%{name}
 install -m 644 -D strfry/strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 sed -i 's|./strfry-db/|/var/lib/strfry/|g' %{buildroot}%{_sysconfdir}/%{name}.conf
+sed -i 's|nofiles = 1000000|nofiles = 0|g' %{buildroot}%{_sysconfdir}/%{name}.conf
+
 install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}/usr/lib/systemd/system/%{name}.service
 
 # XXX - remove when fixed
@@ -94,6 +96,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_sysconfdir}/%{name}.conf
+# can not use _unit macro in a container
 /usr/lib/systemd/system/%{name}.service
 
 # XXX - remove when fixed

@@ -1,9 +1,9 @@
-name: fedora-docker-build
+name: fedora-docker
 
 on: [push, pull_request]
 
 jobs:
-  fedora-docker-build:
+  fedora-docker:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,5 +22,5 @@ jobs:
         docker run -e LD_LIBRARY_PATH='/usr/local/lib' \
                    -v /home/runner/work/strfry/strfry/strfry-db:/app/strfry-db \
                    -v /home/runner/work/strfry/strfry/strfry.conf:/app/strfry.conf \
-                   -t fedora39/strfry &
+                   -d fedora39/strfry
 

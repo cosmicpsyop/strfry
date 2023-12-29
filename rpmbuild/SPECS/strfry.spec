@@ -81,6 +81,10 @@ install -m 644 -D strfry/strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 sed -i 's|./strfry-db/|/var/lib/strfry/|g' %{buildroot}%{_sysconfdir}/%{name}.conf
 install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}%{_unitdir}/%{name}.service
  
+# Install libraries 
+install -m 755 -D /usr/local/lib/libsecp256k1.so.2.1.2 %{buildroot}/usr/local/lib/libsecp256k1.so.2.1.2
+(cd %{buildroot}/usr/local/lib/; rm -f libsecp256k1.so.2; rm -f libsecp256k1.so; ln -s libsecp256k1.so.2.1.2 libsecp256k1.so.2 ; ln -s libsecp256k1.so.2.1.2 libsecp256k1.so )
+
 %clean
 rm -rf %{buildroot}
 

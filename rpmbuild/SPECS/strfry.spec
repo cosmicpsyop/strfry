@@ -126,12 +126,12 @@ fi
 %systemd_post %{name}.service
 
 if ! getent group strfry >/dev/null 2>&1; then
-    addgroup --system --quiet strfry
+    groupadd strfry >/dev/null 2>&1
 fi
 if ! getent passwd strfry >/dev/null 2>&1; then
-    adduser --system --quiet --ingroup strfry		\
-	    --no-create-home --home /nonexistent	\
-	    strfry
+    adduser -g strfry		\
+	    -M -d /nonexistent	\
+	    strfry >/dev/null 2>&1
 fi
 
 if [ $1 == 1 ] ; then
@@ -155,8 +155,6 @@ if [ $1 == 1 ]; then
    systemctl stop strfry
 fi
 
-#systemctl stop strfry || echo "strfry was not started"
-
 %systemd_preun %{name}.service
 
 %postun
@@ -171,8 +169,6 @@ if [ $1 == 0 ] && [ -d /run/systemd/system ] ; then
     systemctl --system daemon-reload >/dev/null || true
 fi
 
-
-#systemctl stop strfry || echo "strfry was not started"
 
 %changelog
 * Fri Sep 22 2023 Doug HoyTech <doug@hoytech.com> - 0.9.6-1

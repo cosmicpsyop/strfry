@@ -4,7 +4,7 @@ ENV TZ=Europe/London
 WORKDIR /build
 
 # Install build dependencies
-RUN dnf update -y && dnf install -y autogen git g++ make rpm-build pkg-config libtool ca-certificates \
+RUN dnf update -y && dnf install -y autogen git g++ make rpmdevtools rpm-build pkg-config libtool ca-certificates \
         openssl-devel libzstd-devel lmdb-devel zlib-devel flatbuffers-devel flatbuffers-compiler \
         perl-YAML perl-Template-Toolkit perl-Regexp-Grammars
 

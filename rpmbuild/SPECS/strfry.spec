@@ -78,14 +78,17 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/
 install -m 755 -D strfry/strfry %{buildroot}%{_bindir}/%{name}
 install -m 644 -D strfry/strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 sed -i 's|./strfry-db/|/var/lib/strfry/|g' %{buildroot}%{_sysconfdir}/%{name}.conf
- 
+
+install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}/usr/lib/systemd/system/%{name}.service
+
+ls -la %{buildroot}%{_unitdir}/%{name}.service
+
 # XXX - remove when fixed
 # Install libraries 
 install -m 755 -D /usr/local/lib/libsecp256k1.so.2.1.2 %{buildroot}/usr/local/lib/libsecp256k1.so.2.1.2
 (cd %{buildroot}/usr/local/lib/; rm -f libsecp256k1.so.2; rm -f libsecp256k1.so; ln -s libsecp256k1.so.2.1.2 libsecp256k1.so.2 ; ln -s libsecp256k1.so.2.1.2 libsecp256k1.so )
 # XXX - remove when fixed
 
-install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}%{_unitdir}/%{name}.service
 
 %clean
 rm -rf %{buildroot}
@@ -94,7 +97,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_sysconfdir}/%{name}.conf
-%{_unitdir}/%{name}.service
+/usr/lib/systemd/system/%{name}.service
+
 # XXX - remove when fixed
 /usr/local/lib/libsecp256k1.so
 /usr/local/lib/libsecp256k1.so.2

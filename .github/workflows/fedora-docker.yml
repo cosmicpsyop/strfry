@@ -1,9 +1,9 @@
-name: fedora-docker
+name: fedora-docker-build
 
 on: [push, pull_request]
 
 jobs:
-  fedora-docker:
+  fedora-docker-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +23,4 @@ jobs:
                    -v /home/runner/work/strfry/strfry/strfry-db:/app/strfry-db \
                    -v /home/runner/work/strfry/strfry/strfry.conf:/app/strfry.conf \
                    -t fedora39/strfry &
-
-    - name: Extract RPM artifact from the Docker container
-      run: |
-        CONTAINER_ID=$(docker ps -q --filter ancestor=fedora39/strfry)
-        docker cp $CONTAINER_ID:/build/strfry/rpmbuild/RPMS/X86_64/strfry-*.rpm ./strfry.rpm
-
-    - name: Upload RPM artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: strfry-rpm
-        path: ./strfry.rpm
-
-    - name: Download RPM artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: strfry-rpm
 

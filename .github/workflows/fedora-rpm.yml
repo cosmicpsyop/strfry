@@ -1,21 +1,27 @@
-name: fredora rpm build
-on: push
+name: fedora-docker-rpm
+
+on: [push, pull_request]
 
 jobs:
-  build:
+  fedora-docker-rpm:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-
-    - name: build RPM package
-      id: rpm
-      uses: naveenrajm7/rpmbuild@master
+    - uses: actions/checkout@v4
       with:
-        spec_file: "/home/runner/work/strfry/strfry/rpmbuild/SPECS/strfry.spec"
+        fetch-depth: 0
 
+    - name: Build the fedora39 docker image for strfry
+      run: |
+        docker build . --file fedora-rpm.Dockerfile --tag fedora39/strfry
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+    - name: Extract RPM artifact from the Docker container
+      run: |
+        CONTAINER_ID=$(docker ps -q --filter ancestor=fedora39/strfry)
+        docker cp $CONTAINER_ID:/build/strfry/rpmbuild/RPMS/X86_64/strfry-*.rpm ./strfry.rpm
+
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v2
       with:
-        name: Binary RPM
-        path: ${{ steps.rpm.outputs.rpm_dir_path }}
+        name: strfry-rpm
+        path: ./strfry.rpm

@@ -30,7 +30,7 @@ WORKDIR /app
 # Copy only necessary artifacts from the build stage
 COPY --from=build /build/strfry strfry
 COPY --from=build /usr/local/lib/. /usr/local/lib/
-COPY --from=build /build/rpmbuild/RPMS/x86_64/strfry-0.9.6-1.fc39.x86_64.rpm .
+COPY --from=build /root/rpmbuild/RPMS/x86_64/strfry-0.9.6-1.fc39.x86_64.rpm .
 
 
 # Install minimal runtime dependencies

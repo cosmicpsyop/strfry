@@ -10,9 +10,9 @@ License:        GPLv3
 URL:            https://hoytech.com/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  systemd
-%{?fc38:BuildRequires: systemd-rpm-macros}
-%{?fc39:BuildRequires: systemd-rpm-macros}
+# BuildRequires:  systemd
+# %{?fc38:BuildRequires: systemd-rpm-macros}
+# %{?fc39:BuildRequires: systemd-rpm-macros}
 BuildRequires:  autogen
 BuildRequires:  git
 BuildRequires:  g++

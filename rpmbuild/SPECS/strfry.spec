@@ -2,7 +2,7 @@
 %global version 0.9.6
 Name:           strfry
 Version:        %{version}
-#Release:        1%{?dist}
+Release:        1%{?dist}
 Summary:        strfry relay service
 
 License:        GPLv3

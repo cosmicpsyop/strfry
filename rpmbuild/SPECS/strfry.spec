@@ -78,10 +78,7 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/
 install -m 755 -D strfry/strfry %{buildroot}%{_bindir}/%{name}
 install -m 644 -D strfry/strfry.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 sed -i 's|./strfry-db/|/var/lib/strfry/|g' %{buildroot}%{_sysconfdir}/%{name}.conf
-
 install -m 644 -D strfry/rpmbuild/strfry.service %{buildroot}/usr/lib/systemd/system/%{name}.service
-
-ls -la %{buildroot}%{_unitdir}/%{name}.service
 
 # XXX - remove when fixed
 # Install libraries 

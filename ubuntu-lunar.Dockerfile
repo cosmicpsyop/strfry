@@ -14,7 +14,8 @@ RUN make clean
 RUN make -j4
 RUN dpkg-buildpackage --build=binary -us -uc
 RUN mv ../*.deb .
-RUN pwd;ls;
+ARG FN="`ls *.deb`"
+RUN echo "${FN}" > /build/pkgfilename
 
 FROM ubuntu:lunar as runner
 WORKDIR /app
@@ -24,7 +25,10 @@ RUN apt update && apt install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
-COPY --from=build /build/strfry_0.9.6-1_amd64.deb strfry_0.9.6-1_amd64.deb
+COPY --from=build /build/pkgfilename /app/
+RUN FN=$(cat /app/pkgfilename) && echo "Filename is: ${FN}"
+COPY --from=build /build/${FN} ${FN}
+
 
 ENTRYPOINT ["/app/strfry"]
 CMD ["relay"]

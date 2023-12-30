@@ -28,12 +28,11 @@ jobs:
         CONTAINER_ID=$(docker ps -q --filter ancestor=lunar/strfry)
         echo $CONTAINER_ID
         docker ps
-        docker exec $CONTAINER_ID ls
         pkgfilename=$(docker exec $CONTAINER_ID /bin/sh -c "ls *.deb")
-        docker cp $CONTAINER_ID:/app/strfry_0.9.6-1_amd64.deb .
-        echo +$pkgfilename+
-        pkgfilename=`ls *.deb`
-        echo -$pkgfilename-
+        docker cp $CONTAINER_ID:/app/$pkgfilename .
+        echo $pkgfilename
+        #pkgfilename=`ls *.deb`
+        #echo -$pkgfilename-
         echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
 
     - name: Upload Debian artifact

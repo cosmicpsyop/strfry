@@ -43,7 +43,7 @@ strfry is a relay for the nostr protocol
 
 %prep
 # %setup -q -T -b 0
-git clone -b fedora-pkg-build-test https://github.com/cosmicpsyop/strfry.git
+git clone -b fedora-pkg-build https://github.com/cosmicpsyop/strfry.git
 #git clone https://github.com/cosmicpsyop/strfry.git
 
 # XXX - remove when fixed

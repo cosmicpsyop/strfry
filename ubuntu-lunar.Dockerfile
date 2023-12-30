@@ -5,7 +5,7 @@ RUN apt update && apt install -y --no-install-recommends \
     git g++ make pkg-config libtool ca-certificates \
     libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
     liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev \
-    debhelper devscripts 
+    debhelper devscripts build-essential
 
 COPY . .
 RUN git submodule update --init

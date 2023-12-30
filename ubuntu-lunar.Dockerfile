@@ -4,14 +4,17 @@ WORKDIR /build
 RUN apt update && apt install -y --no-install-recommends \
     git g++ make pkg-config libtool ca-certificates \
     libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
-    liblmdb-dev libflatbuffers-dev libsecp256k1-dev \
-    libzstd-dev
+    liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev \
+    debhelper devscripts 
 
 COPY . .
 RUN git submodule update --init
 RUN make setup-golpe
 RUN make clean
 RUN make -j4
+RUN dpkg-buildpackage --build=binary -us -uc
+RUN mv ../*.deb .
+
 
 FROM ubuntu:lunar as runner
 WORKDIR /app
@@ -21,5 +24,7 @@ RUN apt update && apt install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
+COPY --from=build /build/strfry*.deb .
+
 ENTRYPOINT ["/app/strfry"]
 CMD ["relay"]

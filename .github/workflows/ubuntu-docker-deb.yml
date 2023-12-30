@@ -28,9 +28,9 @@ jobs:
         CONTAINER_ID=$(docker ps -q --filter ancestor=lunar/strfry)
         echo $CONTAINER_ID
         docker ps
-        docker exec –workdir /app -it lunar/strfry ls
+        docker exec -it lunar/strfry ls
         docker cp $CONTAINER_ID:/app/strfry-*.deb ./strfry.deb
-        docker exec –workdir /app -it lunar/strfry ls
+        docker exec -it lunar/strfry ls
 
     - name: Upload Debian artifact
       uses: actions/upload-artifact@v2

@@ -14,7 +14,7 @@ RUN make clean
 RUN make -j4
 RUN dpkg-buildpackage --build=binary -us -uc
 RUN mv ../*.deb .
-RUN pwd ; ls;
+RUN pwd;ls;
 
 FROM ubuntu:lunar as runner
 WORKDIR /app

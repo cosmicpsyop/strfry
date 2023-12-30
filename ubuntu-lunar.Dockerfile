@@ -24,7 +24,7 @@ RUN apt update && apt install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
-COPY --from=build /build/strfry*.deb .
+COPY --from=build /build/strfry_0.9.6-1_amd64.deb strfry_0.9.6-1_amd64.deb
 
 ENTRYPOINT ["/app/strfry"]
 CMD ["relay"]

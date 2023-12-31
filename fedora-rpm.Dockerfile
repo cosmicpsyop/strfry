@@ -22,6 +22,7 @@ RUN git submodule update --init
 RUN make setup-golpe
 RUN make clean
 RUN rpmbuild -bb --debug rpmbuild/SPECS/strfry.spec
+RUN cp /root/rpmbuild/RPMS/x86_64/strfry-*.rpm .
 ARG FN="`ls *.rpm`"
 RUN echo "${FN}" > /build/pkgfilename
 

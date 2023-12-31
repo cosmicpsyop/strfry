@@ -22,6 +22,8 @@ RUN git submodule update --init
 RUN make setup-golpe
 RUN make clean
 RUN rpmbuild -bb --debug rpmbuild/SPECS/strfry.spec
+ARG FN="`ls *.rpm`"
+RUN echo "${FN}" > /build/pkgfilename
 
 # Final stage
 FROM fedora:39 as runner
@@ -30,7 +32,9 @@ WORKDIR /app
 # Copy only necessary artifacts from the build stage
 COPY --from=build /root/rpmbuild/BUILD/strfry/strfry .
 COPY --from=build /usr/local/lib/. /usr/local/lib/
-COPY --from=build /root/rpmbuild/RPMS/x86_64/strfry-0.9.6-1.fc39.x86_64.rpm .
+COPY --from=build /build/pkgfilename /app/
+RUN FN=$(cat /app/pkgfilename) && echo "Filename is: ${FN}"
+COPY --from=build /build/${FN} ${FN}
 
 
 # Install minimal runtime dependencies

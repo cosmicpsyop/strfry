@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 8.0.0)
 
 Package: strfry
 Depends: ${shlibs:Depends}
+Architecture: any
 Conflicts:
 Replaces:
 Provides: strfry

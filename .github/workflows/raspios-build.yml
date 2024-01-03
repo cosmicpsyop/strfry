@@ -14,11 +14,9 @@ jobs:
     - name: Build strfry
       uses: pguyot/arm-runner-action@HEAD
       with:
-        arch: aarch64
-          cpu: cortex-a53
-          base_image: raspios_lite_arm64:latest
-          cpu_info: raspberrypi_zero2_w_arm64_w
-          commands: |
-            echo "Minimal"
-            test `uname -m` = 'aarch64'
-            ls
+        base_image: raspios_lite_arm64:latest
+        cpu: cortex-a53
+        commands: |
+          echo "Minimal"
+          test `uname -m` = 'aarch64'
+          ls

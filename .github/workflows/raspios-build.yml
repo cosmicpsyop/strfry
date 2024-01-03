@@ -19,4 +19,17 @@ jobs:
         commands: |
           echo "Minimal"
           test `uname -m` = 'aarch64'
-          ls
+          cd /mnt/strfry
+
+          sudo apt update && sudo apt install -y --no-install-recommends \
+          git g++ make pkg-config libtool ca-certificates \
+          libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
+          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          git submodule update --init
+          make setup-golpe
+          make -j4
+          if ! [ -f ./strfry ]; then
+             echo "Strfry build failed."
+             exit 1
+          fi
+

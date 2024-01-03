@@ -16,7 +16,9 @@ jobs:
       with:
         base_image: raspios_lite_arm64:latest
         cpu: cortex-a53
+        cpu_info: raspberrypi_4b
         image_additional_mb: 16000
+        bind_mount_repository: true
         commands: |
           echo "Minimal"
           test `uname -m` = 'aarch64'
@@ -24,7 +26,8 @@ jobs:
           sudo apt update && sudo apt install -y --no-install-recommends \
           git g++ make pkg-config libtool ca-certificates \
           libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
-          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev \
+          debhelper devscripts
          
           git submodule update --init
           make setup-golpe
@@ -33,4 +36,15 @@ jobs:
              echo "Strfry build failed."
              exit 1
           fi
+
+          dpkg-buildpackage --build=binary -us -uc
+          mv ../*.deb .
+          filename=`ls *.deb | grep -v -- -dbgsym`
+          echo "filename=$filename" >> $GITHUB_ENV
+
+      - name: Upload strfry deb
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.filename }}
+          path: ${{ env.filename }}
 

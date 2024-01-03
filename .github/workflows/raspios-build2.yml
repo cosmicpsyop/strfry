@@ -1,0 +1,51 @@
+name: raspios-arm64-deb2
+
+on:
+  push:
+
+jobs:
+  raspios-arm64-deb2:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout repository
+        uses: actions/checkout@v4
+      -
+        name: Add strfry to Raspberry Pi OS Bookworm
+        uses: dtcooper/rpi-image-modifier@v1
+        id: create-image
+        with:
+          base-image-url: https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz
+          image-path: 2023-12-11-raspios-bookworm-arm64-lite-with-strfry.img
+          compress-with-xz: true
+          cache: true
+          mount-repository: true
+          run: |
+            # Copy project README to root directory
+            cp -v /mounted-github-repo/README.md /root
+
+          test `uname -m` = 'aarch64'
+
+          sudo apt update && sudo apt install -y --no-install-recommends \
+          git g++ make pkg-config libtool ca-certificates \
+          libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
+          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          git submodule update --init
+          make setup-golpe
+          make -j4
+          if ! [ -f ./strfry ]; then
+             echo "Strfry build failed."
+             exit 1
+          fi
+
+      -
+        name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-image
+          path: ${{ steps.create-image.outputs.image-path }}
+          if-no-files-found: error
+          retention-days: 2
+          compression-level: 0  # Already compressed with xz above
+
+

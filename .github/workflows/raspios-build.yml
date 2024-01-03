@@ -1,13 +1,9 @@
-name: raspios-arm64-deb # aarch64
+name: raspios-arm64-deb
+
 on:
   push:
-    #    branches:
-    #  - 'master'
-    #  - 'releases/**'
-  pull_request:
-    #workflow_dispatch:
 
-jobs:`
+jobs:
   raspios-arm64-deb:
     runs-on: ubuntu-latest
     steps:

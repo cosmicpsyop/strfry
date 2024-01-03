@@ -26,16 +26,16 @@ jobs:
             cd /mounted-github-repo/
             sudo apt update && sudo apt install -y --no-install-recommends git g++ make pkg-config libtool ca-certificates libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev  liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
             /usr/bin/git version
-          /usr/bin/git config --global --add safe.directory /mounted-github-repo
-          git config --global --add safe.directory /mounted-github-repo
-          git config --local --name-only --get-regexp core.sshCommand
-          git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-          #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe
-          #cd golpe
-          #git submodule update --init
-          #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe/external/uWebsockets
-          # cd external/uWebSockets          git config --global --add safe.directory /home/runner/work/strfry/strfry
-          #  git submodule update --init
+            /usr/bin/git config --global --add safe.directory /mounted-github-repo
+            git config --global --add safe.directory /mounted-github-repo
+            git config --local --name-only --get-regexp core.sshCommand
+            git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+            #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe
+            #cd golpe
+            #git submodule update --init
+            #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe/external/uWebsockets
+            # cd external/uWebSockets          git config --global --add safe.directory /home/runner/work/strfry/strfry
+            #  git submodule update --init
             make setup-golpe
             make -j4
 

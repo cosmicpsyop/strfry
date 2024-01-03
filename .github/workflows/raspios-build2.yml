@@ -24,8 +24,6 @@ jobs:
             # Copy project README to root directory
             cp -v /mounted-github-repo/README.md /root
 
-          test `uname -m` = 'aarch64'
-
           sudo apt update && sudo apt install -y --no-install-recommends \
           git g++ make pkg-config libtool ca-certificates \
           libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \

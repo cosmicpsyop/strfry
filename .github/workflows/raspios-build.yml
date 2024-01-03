@@ -25,7 +25,8 @@ jobs:
           sudo apt update && sudo apt install -y --no-install-recommends \
           git g++ make pkg-config libtool ca-certificates \
           libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
-          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev \
+          debhelper devscripts
          
           git submodule update --init
           make setup-golpe
@@ -34,4 +35,8 @@ jobs:
              echo "Strfry build failed."
              exit 1
           fi
+          dpkg-buildpackage --build=binary -us -uc
+          mv ../*.deb .
+          filename=`ls *.deb | grep -v -- -dbgsym`
+          echo "filename=$filename" >> $GITHUB_ENV
 

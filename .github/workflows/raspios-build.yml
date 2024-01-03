@@ -16,6 +16,7 @@ jobs:
       with:
         base_image: raspios_lite_arm64:latest
         cpu: cortex-a53
+        image_additional_mb: 32000
         commands: |
           echo "Minimal"
           test `uname -m` = 'aarch64'

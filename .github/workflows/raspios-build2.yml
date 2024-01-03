@@ -29,13 +29,16 @@ jobs:
             /usr/bin/git config --global --add safe.directory /mounted-github-repo
             git config --global --add safe.directory /mounted-github-repo
             git config --local --name-only --get-regexp core.sshCommand
-            git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+            gcc
+            git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+            git version
             #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe
             #cd golpe
             #git submodule update --init
             #git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe/external/uWebsockets
             # cd external/uWebSockets          git config --global --add safe.directory /home/runner/work/strfry/strfry
             #  git submodule update --init
+            echo "Make "
             make setup-golpe
             make -j4
 

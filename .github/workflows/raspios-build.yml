@@ -1,0 +1,28 @@
+name: raspios-arm64-deb # aarch64
+on:
+  push:
+    #    branches:
+    #  - 'master'
+    #  - 'releases/**'
+  pull_request:
+    #workflow_dispatch:
+
+jobs:`
+  raspios-bookworm-deb:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout strfry
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Build strfry
+      uses: pguyot/arm-runner-action@HEAD
+      with:
+        arch: aarch64
+          cpu: cortex-a53
+          base_image: raspios_lite_arm64:latest
+          cpu_info: raspberrypi_zero2_w_arm64_w
+          commands: |
+            echo "Minimal"
+            test `uname -m` = 'aarch64'
+            ls

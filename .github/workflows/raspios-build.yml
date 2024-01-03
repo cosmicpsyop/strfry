@@ -19,7 +19,6 @@ jobs:
         commands: |
           echo "Minimal"
           test `uname -m` = 'aarch64'
-          cd /mnt/strfry
 
           sudo apt update && sudo apt install -y --no-install-recommends \
           git g++ make pkg-config libtool ca-certificates \

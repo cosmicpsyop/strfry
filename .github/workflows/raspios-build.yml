@@ -35,7 +35,7 @@ jobs:
              echo "Strfry build failed."
              exit 1
           fi
-          dpkg-buildpackage --build=binary -us -uc
+          dpkg-buildpackage --build=binary -us -uc -aarm64
           mv ../*.deb .
           filename=`ls *.deb | grep -v -- -dbgsym`
           echo "filename=$filename" >> $GITHUB_ENV

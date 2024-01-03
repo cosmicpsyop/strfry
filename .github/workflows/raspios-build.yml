@@ -8,7 +8,7 @@ on:
     #workflow_dispatch:
 
 jobs:`
-  raspios-bookworm-deb:
+  raspios-arm64-deb:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout strfry

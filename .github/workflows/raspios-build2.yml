@@ -24,10 +24,7 @@ jobs:
             # Copy project README to root directory
             cp -v /mounted-github-repo/README.md /root
 
-          sudo apt update && sudo apt install -y --no-install-recommends \
-          git g++ make pkg-config libtool ca-certificates \
-          libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
-          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
+          sudo apt update && sudo apt install -y --no-install-recommends git g++ make pkg-config libtool ca-certificates libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev  liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev
           git submodule update --init
           make setup-golpe
           make -j4

@@ -40,14 +40,14 @@ jobs:
           mv ../*.deb .
 
     - name: Upload strfry
-      with:
+      run: |
           filename=`ls *.deb | grep -v -- -dbgsym`
           echo "filename=$filename" >> $GITHUB_ENV
 
     - name: Compress the release image
       run: |
-        mv ${{ steps.build_image.outputs.image }} release-image.img
-        xz -0 -T 0 -v release-image.img
+          mv ${{ steps.build_image.outputs.image }} release-image.img
+          xz -0 -T 0 -v release-image.img
 
     - name: Upload strfry
       uses: actions/upload-artifact@v2

@@ -20,7 +20,6 @@ jobs:
         image_additional_mb: 16000
         bind_mount_repository: true
         commands: |
-          echo "Minimal"
           test `uname -m` = 'aarch64'
 
           sudo apt update && sudo apt install -y --no-install-recommends \
@@ -36,27 +35,29 @@ jobs:
              echo "Strfry build failed."
              exit 1
           fi
+
+          # remove Architecture from control and issue -aarm64
           dpkg-buildpackage --build=binary -us -uc -aarm64
           mv ../*.deb .
 
-    - name: Upload strfry
+    - name: Verify strfry DEB
       run: |
           filename=`ls *.deb | grep -v -- -dbgsym`
           echo "filename=$filename" >> $GITHUB_ENV
 
-    - name: Compress the release image
+    - name: Compress the raspios image
       run: |
-          mv ${{ steps.build_image.outputs.image }} release-image.img
+          mv ${{ steps.build_image.outputs.image }} raspios-strfry-image.img
           xz -0 -T 0 -v release-image.img
 
     - name: Upload strfry
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ env.filename }}
         path: ${{ env.filename }}
 
-    - name: Upload release image
-      uses: actions/upload-artifact@v2
+    - name: Upload raspios image
+      uses: actions/upload-artifact@v3
       with:
-        name: Release image
-        path: release-image.img.xz
+        name: Full raspios image
+        path: raspios-strfry-image.img.xz

@@ -18,6 +18,7 @@ jobs:
         cpu: cortex-a53
         image_additional_mb: 16000
         bind_mount_repository: true
+        id: build_image
         commands: |
           echo "Minimal"
           test `uname -m` = 'aarch64'
@@ -37,6 +38,25 @@ jobs:
           fi
           dpkg-buildpackage --build=binary -us -uc -aarm64
           mv ../*.deb .
+
+    - name: Upload strfry
+      with:
           filename=`ls *.deb | grep -v -- -dbgsym`
           echo "filename=$filename" >> $GITHUB_ENV
 
+    - name: Compress the release image
+      run: |
+        mv ${{ steps.build_image.outputs.image }} release-image.img
+        xz -0 -T 0 -v release-image.img
+
+    - name: Upload strfry
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.filename }}
+        path: ${{ env.filename }}
+
+    - name: Upload release image
+      uses: actions/upload-artifact@v2
+      with:
+        name: Release image
+        path: release-image.img.xz

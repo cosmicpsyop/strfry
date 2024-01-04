@@ -48,7 +48,7 @@ jobs:
     - name: Compress the raspios image
       run: |
           mv ${{ steps.build_image.outputs.image }} raspios-strfry-image.img
-          xz -0 -T 0 -v release-image.img
+          xz -0 -T 0 -v raspios-strfry-image.img
 
     - name: Upload strfry
       uses: actions/upload-artifact@v3

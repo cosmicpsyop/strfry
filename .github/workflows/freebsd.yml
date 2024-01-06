@@ -26,11 +26,12 @@ jobs:
           git config --local --name-only --get-regexp core.sshCommand
           git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"          
           git submodule update --init
+          patch -p1 < missing-freebsd-1.patch
           make setup-golpe
-
-          patch -p1 < missing-freebsd.patch
+          patch -p1 < missing-freebsd-2.patch
 
           gmake
+
           if ! [ -f ./strfry ]; then
              echo "Strfry build failed."
              exit 1

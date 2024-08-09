@@ -1,0 +1,40 @@
+name: fedora-docker-rpm
+
+on: [push, pull_request]
+
+jobs:
+  fedora-docker-rpm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Build the fedora39 docker image for strfry
+      run: |
+        docker build . --file fedora-rpm.Dockerfile --tag fedora39/strfry
+
+    - name: Run the fedora39 docker image for strfry
+      run: |
+        docker run -e LD_LIBRARY_PATH='/usr/local/lib' \
+               -v /home/runner/work/strfry/strfry/strfry-db:/app/strfry-db \
+               -v /home/runner/work/strfry/strfry/strfry.conf:/app/strfry.conf \
+               -d fedora39/strfry
+
+    - name: Extract RPM artifact from the Docker container
+      run: |
+        CONTAINER_ID=$(docker ps -q --filter ancestor=fedora39/strfry)
+        echo $CONTAINER_ID
+        docker ps
+        pkgfilename=$(docker exec $CONTAINER_ID /bin/sh -c "ls *.rpm")
+        docker cp $CONTAINER_ID:/app/$pkgfilename .
+        echo $pkgfilename
+        echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
+
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.pkgfilename }}
+        path: ${{ env.pkgfilename }}
+

@@ -24,10 +24,12 @@ jobs:
           # ownership workaround
           git config --global --add safe.directory /home/runner/work/strfry/strfry
           git config --local --name-only --get-regexp core.sshCommand
-          git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+          git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"          
           git submodule update --init
           git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe
+          patch -p1 < missing-freebsd-1.patch
           gmake setup-golpe
+          patch -p1 < missing-freebsd-2.patch
 
           gmake
 

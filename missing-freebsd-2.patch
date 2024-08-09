@@ -1,0 +1,26 @@
+--- strfry.hoytech/golpe/external/uWebSockets/Makefile	2024-01-05 13:36:18.260089000 -0800
++++ strfry/golpe/external/uWebSockets/Makefile	2023-10-24 14:58:24.873358000 -0700
+@@ -1,8 +1,8 @@
+ W        = -Wall
+-OPT      = -O2 -g
++OPT      = -O2 -g -I/usr/local/include
+ STD      = -std=c++17
+ CXXFLAGS = $(STD) $(OPT) $(W) -fPIC $(XCXXFLAGS)
+-INCS     = -Isrc/
++INCS     = -Isrc/ -I/usr/local/include
+ 
+ SRCS = src/Extensions.cpp src/Group.cpp src/Networking.cpp src/Hub.cpp src/Node.cpp src/WebSocket.cpp src/HTTPSocket.cpp src/Socket.cpp src/Epoll.cpp src/Room.cpp
+ 
+--- strfry.hoytech/golpe/external/uWebSockets/src/Networking.h	2024-01-05 13:36:18.264054000 -0800
++++ strfry/golpe/external/uWebSockets/src/Networking.h	2023-10-24 14:58:24.873428000 -0700
+@@ -16,6 +16,10 @@
+ #include <endian.h>
+ #endif
+ 
++#ifdef __FreeBSD__
++#include <sys/endian.h>
++#endif
++
+ #ifdef __APPLE__
+ #include <libkern/OSByteOrder.h>
+ #define htobe64(x) OSSwapHostToBigInt64(x)

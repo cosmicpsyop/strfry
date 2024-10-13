@@ -28,7 +28,7 @@ jobs:
       - name: Package strfry
         run: |
           sudo apt-get install debhelper devscripts -y
-          dpkg-buildpackage --build=binary -us -uc
+          dpkg-buildpackage --build=binary -us -uc -d
           mv ../*.deb .
           filename=`ls *.deb | grep -v -- -dbgsym`
           echo "filename=$filename" >> $GITHUB_ENV

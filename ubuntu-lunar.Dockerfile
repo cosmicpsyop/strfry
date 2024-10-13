@@ -12,6 +12,7 @@ RUN git submodule update --init
 RUN make setup-golpe
 RUN make clean
 RUN make -j4
+RUN cp debian/changelog.test debian/changelog
 RUN dpkg-buildpackage --build=binary -us -uc -d
 RUN mv ../*.deb .
 ARG FN="`ls *.deb`"

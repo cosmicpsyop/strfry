@@ -57,7 +57,7 @@ jobs:
         path: ${{ env.filename }}
 
     - name: Upload raspios image
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Full raspios image
         path: raspios-strfry-image.img.xz

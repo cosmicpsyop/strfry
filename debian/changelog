@@ -1,4 +1,4 @@
-strfry (1.0.1) unstable; urgency=medium
+strfry (1.0.1-1) unstable; urgency=low
 
   * Prevent exporting a v2 DB using --fried. The packed representation
     will be     corrupted. Instead, you should downgrade to 0.9.7 to do
@@ -6,7 +6,7 @@ strfry (1.0.1) unstable; urgency=medium
   * Fix build error on some platforms that don't include stdint.h in
     another     header. Reported by fiatjaf.
 
- -- Doug Hoyte <doug@hcsw.org>  Sat Sep 14 10:13:26 2024 -0400
+ -- Doug Hoyte <doug@hcsw.org>  Thu, 14 Sep 2024 01:02:25 -0700
 
 strfry (0.9.6-1) unstable; urgency=low
 

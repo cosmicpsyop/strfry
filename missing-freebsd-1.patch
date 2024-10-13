@@ -1,0 +1,20 @@
+--- strfry.hoytech/golpe/rules.mk	2024-10-12 21:40:01.685519410 -0700
++++ strfry/golpe/rules.mk	2024-10-12 21:43:27.220075811 -0700
+@@ -11,6 +11,17 @@
+ LDFLAGS  += -flto $(XLDFLAGS)
+ SRCS    := golpe/logging.cpp build/main.cpp $(shell golpe/if-feature.pl config build/config.cpp) $(wildcard src/*.cpp) $(wildcard $(foreach p,$(APPS),src/apps/$(p)/*.cpp))
+ 
++ifeq ($(shell echo | gcc -E -dM - | grep -c __FreeBSD__),1)
++CXX      = g++
++CC       = gcc
++MAKE     = gmake
++XCXXFLAGS=-Wno-maybe-uninitialized
++STD      += -stdlib=libc++
++INCS     += -I/usr/local/include  # Add FreeBSD-specific include paths
++LDLIBS   += -linotify -lc++ -luv
++NPROC    ?= 2
++endif
++
+ OBJS    := $(SRCS:.cpp=.o)
+ DEPS    := $(SRCS:.cpp=.d)
+ 

@@ -15,7 +15,7 @@ jobs:
     - name: Build strfry
       uses: vmactions/freebsd-vm@v1
       with:
-        release: 13.2
+        release: 13.4
         usesh: true
         prepare: |
           pkg install -y gcc gmake cmake git perl5 openssl lmdb flatbuffers libuv libinotify zstr secp256k1 zlib-ng p5-Regexp-Grammars p5-Module-Install-Template p5-YAML wget
@@ -24,10 +24,12 @@ jobs:
           # ownership workaround
           git config --global --add safe.directory /home/runner/work/strfry/strfry
           git config --local --name-only --get-regexp core.sshCommand
-          git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+          git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"          
           git submodule update --init
           git config --global --add safe.directory /home/runner/work/strfry/strfry/golpe
+          patch -p1 < missing-freebsd-1.patch
           gmake setup-golpe
+          patch -p1 < missing-freebsd-2.patch
 
           gmake
 
@@ -48,7 +50,7 @@ jobs:
           echo "pkgfilename=$pkgfilename" >> $GITHUB_ENV
 
     - name: Upload strfry
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.pkgfilename }}
         path: ${{ env.pkgfilename }}

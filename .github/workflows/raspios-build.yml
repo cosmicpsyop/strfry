@@ -38,7 +38,7 @@ jobs:
           fi
 
           if [ -f debian/changelog.test ]; then
-             cp debian/changelog.test debian/changlog
+             cp debian/changelog.test debian/changelog
           fi
           # remove Architecture from control and issue -aarm64
           dpkg-buildpackage --build=binary -us -uc -aarm64 -d

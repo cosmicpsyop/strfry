@@ -21,6 +21,7 @@ jobs:
         bind_mount_repository: true
         commands: |
           test `uname -m` = 'aarch64'
+          cat /etc/os-release
 
           sudo apt update && sudo apt install -y --no-install-recommends \
           git g++ make pkg-config libtool ca-certificates \
@@ -36,8 +37,11 @@ jobs:
              exit 1
           fi
 
+          if [ -f debian/changelog.test ]; then
+             cp debian/changelog.test debian/changlog
+          fi
           # remove Architecture from control and issue -aarm64
-          dpkg-buildpackage --build=binary -us -uc -aarm64
+          dpkg-buildpackage --build=binary -us -uc -aarm64 -d
           mv ../*.deb .
 
     - name: Verify strfry DEB
@@ -51,7 +55,7 @@ jobs:
           xz -0 -T 0 -v raspios-strfry-image.img
 
     - name: Upload strfry
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.filename }}
         path: ${{ env.filename }}

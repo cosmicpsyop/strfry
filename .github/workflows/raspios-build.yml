@@ -1,0 +1,67 @@
+name: raspios-arm64-deb
+
+on:
+  push:
+
+jobs:
+  raspios-arm64-deb:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout strfry
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Build strfry
+      uses: pguyot/arm-runner-action@HEAD
+      id: build_image
+      with:
+        base_image: raspios_lite_arm64:latest
+        cpu: cortex-a53
+        image_additional_mb: 16000
+        bind_mount_repository: true
+        commands: |
+          test `uname -m` = 'aarch64'
+          cat /etc/os-release
+
+          sudo apt update && sudo apt install -y --no-install-recommends \
+          git g++ make pkg-config libtool ca-certificates \
+          libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
+          liblmdb-dev libflatbuffers-dev libsecp256k1-dev libzstd-dev \
+          debhelper devscripts
+         
+          git submodule update --init
+          make setup-golpe
+          make -j4
+          if ! [ -f ./strfry ]; then
+             echo "Strfry build failed."
+             exit 1
+          fi
+
+          if [ -f debian/changelog.test ]; then
+             cp debian/changelog.test debian/changelog
+          fi
+          # remove Architecture from control and issue -aarm64
+          dpkg-buildpackage --build=binary -us -uc -aarm64 -d
+          mv ../*.deb .
+
+    - name: Verify strfry DEB
+      run: |
+          filename=`ls *.deb | grep -v -- -dbgsym`
+          echo "filename=$filename" >> $GITHUB_ENV
+
+    - name: Compress the raspios image
+      run: |
+          mv ${{ steps.build_image.outputs.image }} raspios-strfry-image.img
+          xz -0 -T 0 -v raspios-strfry-image.img
+
+    - name: Upload strfry
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.filename }}
+        path: ${{ env.filename }}
+
+    - name: Upload raspios image
+      uses: actions/upload-artifact@v4
+      with:
+        name: Full raspios image
+        path: raspios-strfry-image.img.xz
